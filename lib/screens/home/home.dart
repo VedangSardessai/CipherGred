@@ -255,8 +255,8 @@ class _HomeState extends State<Home> {
             width: size.height * 0.16,
             child: Center(
               child: Container(
-                height: size.height * 0.16,
-                width: size.height * 0.16,
+                height: 210,
+                width: 210,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
                   boxShadow: const [
@@ -307,8 +307,8 @@ class _HomeState extends State<Home> {
             width: size.height * 0.16,
             child: Center(
               child: Container(
-                height: size.height * 0.16,
-                width: size.height * 0.16,
+                height: 210,
+                width: 210,
                 decoration: BoxDecoration(
                   color: const Color(0xff36353C),
                   borderRadius: BorderRadius.circular(20),
