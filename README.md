@@ -1,6 +1,8 @@
-# cipher_gred
+# CipherGred
 
-A new Flutter project.
+CipherGred is one of my first flutter projects that will be helpful for any user to scan the ingredients of any product and find if any harmful ingredients are present in the same.
+Harmful ingredients are the ones that are laid down by various world health organisations.
+
 
 ## Getting Started
 
