@@ -1,19 +1,19 @@
 import 'dart:io';
+
+import 'package:cipher_gred/screens/scan_results/result.dart';
+import 'package:cipher_gred/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:cipher_gred/screens/scan_results/result.dart';
-import 'package:cipher_gred/services/auth.dart';
 
 class Home extends StatefulWidget {
-  // const Home({Key? key}) : super(key: key);
-  List<String>? list;
+  const Home({Key? key}) : super(key: key);
 
   @override
-  State<Home> createState() => _HomeState(this.list);
+  State<Home> createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
@@ -24,11 +24,45 @@ class _HomeState extends State<Home> {
   String scannedText = "";
 
   List<String> scannedTextArr = [''];
-  List<String> harmfulIngred = ['phosphoric', 'sugar', 'book', 'robert'];
+  List<String> harmfulIngred = [
+    'msg',
+    "phosphoric acid",
+    'monosodium glutamate',
+    'aspartame',
+    '(hfcs)',
+    '(tbhq)',
+    'bha',
+    'bht',
+    'sodium nitrate',
+    'sodium nitrite',
+    'vegetable oil',
+    'potassium bromate',
+    'bovine growth hormone',
+    'agave nectar',
+    'artificial food coloring',
+    'artificial food coloring',
+    'synthetic trans fat',
+    'synthetic trans fats',
+    'corn syrup',
+    'brominated vegetable oil',
+    'high fructose corn syrup',
+    'phosphoric',
+    'formaldehyde',
+    'nitrites',
+    'methylene',
+    'ditrityl',
+    'diethylexyl',
+    'isobutyl',
+    'isopropyl',
+    'parabens',
+    'polyfluoroalkyl',
+    'pfas',
+    'phenylendiamine',
+  ];
+
   List<String>? constructorArr;
   int flagOfIngredientsFound = 0;
-
-  _HomeState(this.constructorArr);
+  String harmfulIngredientsFound = "";
 
   Future uploadImage(ImageSource source) async {
     try {
@@ -56,19 +90,18 @@ class _HomeState extends State<Home> {
 
   Text harmful = Text(
     'Your Product is unsafe to use!',
-    style: GoogleFonts.poppins(
-      color: Colors.white,
-    ),
+    style: GoogleFonts.poppins(color: Colors.white, fontSize: 20),
   );
   Text safe = Text(
     'Your Product is safe to use!',
-    style: GoogleFonts.poppins(
-      color: Colors.white,
-    ),
+    style: GoogleFonts.poppins(color: Colors.white, fontSize: 20),
   );
 
   void recogniseText(File image) async {
-    setState(() => flagOfIngredientsFound = 0);
+    setState(() {
+      flagOfIngredientsFound = 0;
+      harmfulIngredientsFound = "";
+    });
     final inputImage = InputImage.fromFilePath(image.path);
     final textDetector = GoogleMlKit.vision.textRecognizer();
 
@@ -79,28 +112,39 @@ class _HomeState extends State<Home> {
 
     for (TextBlock block in recognizedText.blocks) {
       for (TextLine line in block.lines) {
-        for (TextElement elements in line.elements) {
-          scannedText = scannedText + elements.text + ' ';
-          scannedTextArr.add(
-            elements.text.toLowerCase().replaceAll(RegExp(r'[^\w\s]+'), ''),
-          );
-        }
+        // for (TextElement elements in line.elements) {
+        //   scannedText = scannedText + elements.text + ' ';
+        //   scannedTextArr.add(
+        //     elements.text.toLowerCase().replaceAll(RegExp(r'[^\w\s]+'), ' '),
+        //     // elements.text,
+        //   );
+        // }
+
+        scannedText += line.text + '\n';
+        scannedTextArr
+            .add(line.text.toLowerCase().replaceAll(RegExp(r'[^\w\s]+'), ' '));
       }
     }
+
+    print(scannedTextArr);
 
     for (int i = 0; i < scannedTextArr.length; i++) {
       if (harmfulIngred.contains(scannedTextArr[i])) {
         setState(() {
           flagOfIngredientsFound = 1;
         });
-        print(scannedTextArr[i] + ' is Present');
+
+        harmfulIngredientsFound =
+            harmfulIngredientsFound + scannedTextArr[i] + " ";
+
       }
     }
-    print('Flag = ' + flagOfIngredientsFound.toString());
-    // final data = _HomeState(scannedTextArr);
+    print(harmfulIngredientsFound);
 
     textScanning = false;
-    setState(() {});
+    setState(() {
+      harmfulIngredientsFound = harmfulIngredientsFound.toUpperCase();
+    });
   }
 
   @override
@@ -212,10 +256,13 @@ class _HomeState extends State<Home> {
                                   context,
                                   MaterialPageRoute(builder: (context) {
                                     return flagOfIngredientsFound == 1
-                                        ? ScannedResult(scannedText,
-                                            scannedTextArr, harmful)
-                                        : ScannedResult(
-                                            scannedText, scannedTextArr, safe);
+                                        ? ScannedResult(
+                                            scannedText,
+                                            scannedTextArr,
+                                            harmful,
+                                            harmfulIngredientsFound)
+                                        : ScannedResult(scannedText,
+                                            scannedTextArr, safe, '');
                                   }),
                                 );
                               },

@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cipher_gred/models/userr.dart';
@@ -11,10 +10,12 @@ Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
-  runApp(MainClass());
+  runApp(const MainClass());
 }
 
 class MainClass extends StatelessWidget {
+const MainClass({Key? key}) : super(key: key);
+  @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) => GoogleSignInProvider(),
@@ -22,7 +23,7 @@ class MainClass extends StatelessWidget {
         catchError: (_, __) => null,
         initialData: null,
         value: AuthService().userStream,
-        child: MaterialApp(
+        child: const MaterialApp(
           debugShowCheckedModeBanner: false,
           home: Wrapper(),
         ),

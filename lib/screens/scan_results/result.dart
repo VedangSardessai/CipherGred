@@ -6,55 +6,18 @@ class ScannedResult extends StatefulWidget {
   final List<String> scannedText;
   final Text safeOrNot;
 
-  ScannedResult(this.text, this.scannedText, this.safeOrNot);
+  final String harmfulIngredientsScanned;
+
+  const ScannedResult(this.text, this.scannedText, this.safeOrNot,
+      this.harmfulIngredientsScanned,
+      {Key? key})
+      : super(key: key);
 
   @override
   State<ScannedResult> createState() => _ScannedResultState();
 }
 
 class _ScannedResultState extends State<ScannedResult> {
-  String harmfulIngredientsFound = "";
-
-  List<String> harmfulIngredientsList = [
-    'largest',
-    'cement',
-    'phosphoric',
-    'sugar',
-    'book',
-    'testing',
-    'messages'
-  ];
-
-  int flagOfHarmfulIngredients = 0;
-
-  String findHarmfulIngredients(List<String> scannedText) {
-    for (int i = 0; i < scannedText.length; i++) {
-      if ((harmfulIngredientsList.contains(scannedText[i]) ||
-              scannedText[i] == ' ') &&
-          !harmfulIngredientsFound.contains(scannedText[i])) {
-        flagOfHarmfulIngredients = 1;
-        harmfulIngredientsFound =
-            harmfulIngredientsFound + ' ' + scannedText[i] + '\n';
-        print(scannedText[i] + ' is Present');
-      }
-    }
-
-    if (harmfulIngredientsFound.isNotEmpty) {
-      setState(() {
-        flagOfHarmfulIngredients = 1;
-        print('Not Empty');
-      });
-    } else {
-      setState(() {
-        print('Empty');
-        flagOfHarmfulIngredients = 0;
-      });
-    }
-
-    print('-------- ' + flagOfHarmfulIngredients.toString());
-    return harmfulIngredientsFound;
-  }
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -77,9 +40,9 @@ class _ScannedResultState extends State<ScannedResult> {
             left: 25,
             right: 25,
             child: Text(
-              'Below are the ingredients scanned from picture you took',
+              'The text scanned from the image provided by you is shown below :',
               style: GoogleFonts.poppins(
-                fontSize: size.width * 0.05,
+                fontSize: size.width * 0.04,
                 color: Colors.white,
               ),
             ),
@@ -115,7 +78,16 @@ class _ScannedResultState extends State<ScannedResult> {
             right: size.width * 0.1,
             child: Center(
               child: Column(
-                children: [widget.safeOrNot],
+                children: [
+                  widget.safeOrNot,
+                  Text(
+                    widget.harmfulIngredientsScanned,
+                    style: GoogleFonts.poppins(
+                      color: Colors.white,
+                      fontSize: 18,
+                    ),
+                  ),
+                ],
               ),
             ),
           )

@@ -11,8 +11,7 @@ class Authenticate extends StatefulWidget {
 class _AuthenticateState extends State<Authenticate> {
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    return Center(
+    return const Center(
       child: SignIn(),
     );
   }

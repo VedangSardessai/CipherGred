@@ -6,7 +6,7 @@ class AuthService {
 
   //Create user object based on User
   Userr? _userr(User user) {
-    return user != null ? Userr(uid: user.uid) : null;
+    return  Userr(uid: user.uid);
   }
 
   //Auth change user stream
@@ -33,11 +33,9 @@ class AuthService {
   // Sign out
   Future signOut() async{
     try{
-    // print(_userr);
     return await _auth.signOut();
     }
     catch(e){
-    // print(e.toString());
     return null;
     }
   }
