@@ -26,11 +26,11 @@ class _HomeState extends State<Home> {
   List<String> scannedTextArr = [''];
   List<String> harmfulIngred = [
     'msg',
-    "phosphoric acid",
+    'phosphoric acid',
     'monosodium glutamate',
     'aspartame',
-    '(hfcs)',
-    '(tbhq)',
+    'hfcs',
+    'tbhq',
     'bha',
     'bht',
     'sodium nitrate',
@@ -120,25 +120,37 @@ class _HomeState extends State<Home> {
         //   );
         // }
 
-        scannedText += line.text + '\n';
+        scannedText += line.text.replaceAll(RegExp(r'[^\w\s]+'), ' ') + ' ';
         scannedTextArr
             .add(line.text.toLowerCase().replaceAll(RegExp(r'[^\w\s]+'), ' '));
       }
     }
 
-    print(scannedTextArr);
+    // print(scannedTextArr);
+    print(scannedText);
+    // for (int i = 0; i < scannedTextArr.length; i++) {
+    //   if (harmfulIngred.contains(scannedTextArr[i])) {
+    //     setState(() {
+    //       flagOfIngredientsFound = 1;
+    //     });
+    //
+    //     harmfulIngredientsFound =
+    //         harmfulIngredientsFound + scannedTextArr[i] + " ";
+    //
+    //   }
+    // }
 
-    for (int i = 0; i < scannedTextArr.length; i++) {
-      if (harmfulIngred.contains(scannedTextArr[i])) {
+    for(int i = 0 ; i < harmfulIngred.length ; i++){
+      if(scannedText.contains(harmfulIngred[i])){
         setState(() {
-          flagOfIngredientsFound = 1;
-        });
+                flagOfIngredientsFound = 1;
+              });
 
-        harmfulIngredientsFound =
-            harmfulIngredientsFound + scannedTextArr[i] + " ";
-
+              harmfulIngredientsFound =
+                  harmfulIngredientsFound + harmfulIngred[i] + ",";
       }
     }
+
     print(harmfulIngredientsFound);
 
     textScanning = false;
