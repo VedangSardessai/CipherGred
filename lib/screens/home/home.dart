@@ -140,14 +140,14 @@ class _HomeState extends State<Home> {
     //   }
     // }
 
-    for(int i = 0 ; i < harmfulIngred.length ; i++){
-      if(scannedText.contains(harmfulIngred[i])){
+    for (int i = 0; i < harmfulIngred.length; i++) {
+      if (scannedText.contains(harmfulIngred[i])) {
         setState(() {
-                flagOfIngredientsFound = 1;
-              });
+          flagOfIngredientsFound = 1;
+        });
 
-              harmfulIngredientsFound =
-                  harmfulIngredientsFound + harmfulIngred[i] + ",";
+        harmfulIngredientsFound =
+            harmfulIngredientsFound + harmfulIngred[i] + ",";
       }
     }
 
