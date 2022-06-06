@@ -58,11 +58,17 @@ class _HomeState extends State<Home> {
     'polyfluoroalkyl',
     'pfas',
     'phenylendiamine',
+    'E160',
+    'E551',
+    'phenylalanine',
+    'E951',
+    'E262',
+    'E330'
   ];
-
   List<String>? constructorArr;
   int flagOfIngredientsFound = 0;
   String harmfulIngredientsFound = "";
+  List<String> harmfulIngredientsList = [];
 
   Future uploadImage(ImageSource source) async {
     try {
@@ -89,7 +95,7 @@ class _HomeState extends State<Home> {
   }
 
   Text harmful = Text(
-    'Your Product is unsafe to use!',
+    'Your Product is unsafe to use.It contains harmful ingredients mentioned below!',
     style: GoogleFonts.poppins(color: Colors.white, fontSize: 20),
   );
   Text safe = Text(
@@ -112,33 +118,16 @@ class _HomeState extends State<Home> {
 
     for (TextBlock block in recognizedText.blocks) {
       for (TextLine line in block.lines) {
-        // for (TextElement elements in line.elements) {
-        //   scannedText = scannedText + elements.text + ' ';
-        //   scannedTextArr.add(
-        //     elements.text.toLowerCase().replaceAll(RegExp(r'[^\w\s]+'), ' '),
-        //     // elements.text,
-        //   );
-        // }
-
         scannedText += line.text.replaceAll(RegExp(r'[^\w\s]+'), ' ') + ' ';
         scannedTextArr
             .add(line.text.toLowerCase().replaceAll(RegExp(r'[^\w\s]+'), ' '));
       }
     }
 
-    // print(scannedTextArr);
-    print(scannedText);
-    // for (int i = 0; i < scannedTextArr.length; i++) {
-    //   if (harmfulIngred.contains(scannedTextArr[i])) {
-    //     setState(() {
-    //       flagOfIngredientsFound = 1;
-    //     });
-    //
-    //     harmfulIngredientsFound =
-    //         harmfulIngredientsFound + scannedTextArr[i] + " ";
-    //
-    //   }
-    // }
+    print(scannedTextArr);
+
+// for(int i = 0; i < 20; i++)
+//   print(harmfulIngred[i].toString()+'\n');
 
     for (int i = 0; i < harmfulIngred.length; i++) {
       if (scannedText.contains(harmfulIngred[i])) {
@@ -147,16 +136,22 @@ class _HomeState extends State<Home> {
         });
 
         harmfulIngredientsFound =
-            harmfulIngredientsFound + harmfulIngred[i] + ",";
+            harmfulIngredientsFound + harmfulIngred[i] + '\n';
+        if (!harmfulIngredientsList.contains(harmfulIngred[i])) {
+          harmfulIngredientsList.add(harmfulIngred[i]);
+        }
       }
     }
 
-    print(harmfulIngredientsFound);
+    // print(harmfulIngredientsFound);
 
     textScanning = false;
     setState(() {
       harmfulIngredientsFound = harmfulIngredientsFound.toUpperCase();
     });
+
+    harmfulIngredientsList.sort();
+    print(harmfulIngredientsList);
   }
 
   @override
@@ -166,10 +161,10 @@ class _HomeState extends State<Home> {
       backgroundColor: const Color(0xff36353C),
       appBar: AppBar(
         title: Text(
-          'Home Page',
+          'HOME PAGE',
           style: GoogleFonts.poppins(
             fontSize: size.width * 0.05,
-            letterSpacing: size.width * 0.002,
+            letterSpacing: size.width * 0.005,
           ),
         ),
         backgroundColor: const Color(0xff222831),
@@ -220,19 +215,7 @@ class _HomeState extends State<Home> {
                           ),
                         ),
                         const Spacer(),
-                        // Expanded(
-                        //   child: SingleChildScrollView(
-                        //     scrollDirection: Axis.vertical,
-                        //     child: Text(
-                        //       scannedText,
-                        //       style: GoogleFonts.poppins(
-                        //         fontSize: size.width * 0.035,
-                        //         color: Colors.white,
-                        //       ),
-                        //     ),
-                        //   ),
-                        // ),
-                        // Spacer(),
+
                         Container(
                           height: size.height * 0.16,
                           width: size.height * 0.16,
@@ -272,9 +255,9 @@ class _HomeState extends State<Home> {
                                             scannedText,
                                             scannedTextArr,
                                             harmful,
-                                            harmfulIngredientsFound)
+                                            harmfulIngredientsFound,harmfulIngredientsList)
                                         : ScannedResult(scannedText,
-                                            scannedTextArr, safe, '');
+                                            scannedTextArr, safe, '',harmfulIngredientsList);
                                   }),
                                 );
                               },

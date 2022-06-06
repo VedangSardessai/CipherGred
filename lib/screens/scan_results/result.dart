@@ -7,9 +7,10 @@ class ScannedResult extends StatefulWidget {
   final Text safeOrNot;
 
   final String harmfulIngredientsScanned;
+  final List<String> harmfulIngredientList;
 
   const ScannedResult(this.text, this.scannedText, this.safeOrNot,
-      this.harmfulIngredientsScanned,
+      this.harmfulIngredientsScanned, this.harmfulIngredientList,
       {Key? key})
       : super(key: key);
 
@@ -87,6 +88,13 @@ class _ScannedResultState extends State<ScannedResult> {
                       fontSize: 18,
                     ),
                   ),
+
+                  //This is how we'll do the rest of the listview
+                  Column(
+                    children: widget.harmfulIngredientList.map((ingredients){
+                      return Text(ingredients);
+                    }).toList(),
+                  )
                 ],
               ),
             ),
