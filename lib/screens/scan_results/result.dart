@@ -9,7 +9,7 @@ class ScannedResult extends StatefulWidget {
   final String harmfulIngredientsScanned;
   final List<String> harmfulIngredientList;
 
-  const ScannedResult(this.text, this.scannedText, this.safeOrNot,
+  ScannedResult(this.text, this.scannedText, this.safeOrNot,
       this.harmfulIngredientsScanned, this.harmfulIngredientList,
       {Key? key})
       : super(key: key);
@@ -72,35 +72,58 @@ class _ScannedResultState extends State<ScannedResult> {
               ),
             ),
           ),
-
           Positioned(
             top: size.height * 0.3,
-            left: size.width * 0.1,
-            right: size.width * 0.1,
+            left: 25,
+            right: 25,
             child: Center(
               child: Column(
                 children: [
                   widget.safeOrNot,
-                  Text(
-                    widget.harmfulIngredientsScanned,
-                    style: GoogleFonts.poppins(
-                      color: Colors.white,
-                      fontSize: 18,
-                    ),
-                  ),
-
-                  //This is how we'll do the rest of the listview
-                  Column(
-                    children: widget.harmfulIngredientList.map((ingredients){
-                      return Text(ingredients);
-                    }).toList(),
-                  )
+                  widget.safeOrNot !=
+                          Text(
+                            'Your Product is safe to use!',
+                            style: GoogleFonts.poppins(
+                                color: Colors.white, fontSize: 20),
+                          )
+                      ? Card(
+                          color: Colors.grey[900],
+                          child: Container(
+                            padding: const EdgeInsets.all(5),
+                            height: 400,
+                            child: ListView(
+                              shrinkWrap: true,
+                              scrollDirection: Axis.vertical,
+                              children: widget.harmfulIngredientList
+                                  .map((ingredients) {
+                                return SizedBox(
+                                  height: 45,
+                                  width: size.width,
+                                  child: Card(
+                                    margin: const EdgeInsets.all(5),
+                                    color: Colors.grey[850],
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(top: 4.0),
+                                      child: Text(
+                                        ingredients.toUpperCase(),
+                                        textAlign: TextAlign.center,
+                                        style: GoogleFonts.poppins(
+                                          color: Colors.white,
+                                          fontSize: 18,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
+                            ),
+                          ),
+                        )
+                      : const Text(''),
                 ],
               ),
             ),
-          )
-
-          // Positioned(child: child)
+          ),
         ],
       ),
     );

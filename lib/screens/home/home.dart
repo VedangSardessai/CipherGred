@@ -69,7 +69,8 @@ class _HomeState extends State<Home> {
   int flagOfIngredientsFound = 0;
   String harmfulIngredientsFound = "";
   List<String> harmfulIngredientsList = [];
-
+  int numberOfHarm = 0;
+  List <String> nonHarmfulIngredients =[];
   Future uploadImage(ImageSource source) async {
     try {
       final image = await ImagePicker().pickImage(source: source);
@@ -134,7 +135,7 @@ class _HomeState extends State<Home> {
         setState(() {
           flagOfIngredientsFound = 1;
         });
-
+        numberOfHarm++;
         harmfulIngredientsFound =
             harmfulIngredientsFound + harmfulIngred[i] + '\n';
         if (!harmfulIngredientsList.contains(harmfulIngred[i])) {
@@ -152,6 +153,9 @@ class _HomeState extends State<Home> {
 
     harmfulIngredientsList.sort();
     print(harmfulIngredientsList);
+    print('-----------------------------------');
+    print(numberOfHarm);
+    numberOfHarm = 0;
   }
 
   @override
@@ -257,7 +261,7 @@ class _HomeState extends State<Home> {
                                             harmful,
                                             harmfulIngredientsFound,harmfulIngredientsList)
                                         : ScannedResult(scannedText,
-                                            scannedTextArr, safe, '',harmfulIngredientsList);
+                                            scannedTextArr, safe, '',nonHarmfulIngredients);
                                   }),
                                 );
                               },
