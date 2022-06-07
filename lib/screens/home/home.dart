@@ -96,7 +96,7 @@ class _HomeState extends State<Home> {
   }
 
   Text harmful = Text(
-    'Your Product is unsafe to use.It contains harmful ingredients mentioned below!',
+    'Your Product is unsafe to use!\nIt contains harmful ingredients mentioned below!',
     style: GoogleFonts.poppins(color: Colors.white, fontSize: 20),
   );
   Text safe = Text(
@@ -126,9 +126,6 @@ class _HomeState extends State<Home> {
     }
 
     print(scannedTextArr);
-
-// for(int i = 0; i < 20; i++)
-//   print(harmfulIngred[i].toString()+'\n');
 
     for (int i = 0; i < harmfulIngred.length; i++) {
       if (scannedText.contains(harmfulIngred[i])) {

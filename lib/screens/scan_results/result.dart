@@ -80,16 +80,12 @@ class _ScannedResultState extends State<ScannedResult> {
               child: Column(
                 children: [
                   widget.safeOrNot,
-                  widget.safeOrNot !=
-                          Text(
-                            'Your Product is safe to use!',
-                            style: GoogleFonts.poppins(
-                                color: Colors.white, fontSize: 20),
-                          )
+                  widget.harmfulIngredientList.isNotEmpty
                       ? Card(
                           color: Colors.grey[900],
                           child: Container(
                             padding: const EdgeInsets.all(5),
+                            width: 500,
                             height: 400,
                             child: ListView(
                               shrinkWrap: true,
@@ -106,9 +102,9 @@ class _ScannedResultState extends State<ScannedResult> {
                                       padding: const EdgeInsets.only(top: 4.0),
                                       child: Text(
                                         ingredients.toUpperCase(),
-                                        textAlign: TextAlign.center,
+                                        textAlign: TextAlign.left,
                                         style: GoogleFonts.poppins(
-                                          color: Colors.white,
+                                          color: Colors.yellow,
                                           fontSize: 18,
                                         ),
                                       ),
