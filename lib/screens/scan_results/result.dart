@@ -9,7 +9,7 @@ class ScannedResult extends StatefulWidget {
   final String harmfulIngredientsScanned;
   final List<String> harmfulIngredientList;
 
-  ScannedResult(this.text, this.scannedText, this.safeOrNot,
+  const ScannedResult(this.text, this.scannedText, this.safeOrNot,
       this.harmfulIngredientsScanned, this.harmfulIngredientList,
       {Key? key})
       : super(key: key);

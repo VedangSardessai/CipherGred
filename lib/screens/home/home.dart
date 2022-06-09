@@ -6,8 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:google_ml_kit/google_ml_kit.dart';
+
+// import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -24,8 +26,10 @@ class _HomeState extends State<Home> {
   String scannedText = "";
 
   List<String> scannedTextArr = [''];
+
   List<String> harmfulIngred = [
     'msg',
+    'monosodium glutamate',
     'phosphoric acid',
     'monosodium glutamate',
     'aspartame',
@@ -34,27 +38,71 @@ class _HomeState extends State<Home> {
     'bha',
     'bht',
     'sodium nitrate',
+    'sodium benzoate',
+    'trans fat',
     'sodium nitrite',
+    'guar gum',
     'vegetable oil',
+    'hydrogenated vegetable oil',
     'potassium bromate',
+    'propyl gallate',
+    'propylene glycol',
+    'butane',
+    'olestra',
+    'polysorbate 60',
+    'camauba wax',
+    'magnesium sulphate',
+    'chlorine dioxide',
+    'disodium isosinate',
+    'disodium guanylate',
+    'enriched flour',
+    'recombinant bovine growth hormone',
     'bovine growth hormone',
     'agave nectar',
     'artificial food coloring',
+    'artificial flavoring',
+    'artificial flavouring',
+    'artificial food color',
+    'artificial food colors',
+    'synthetic food coloring',
+    'synthetic food color',
+    'synthetic food colors',
     'artificial food coloring',
     'synthetic trans fat',
+    'bisphenol a',
+    'polycyclic aromatic hydrocarbons',
+    'pahs',
+    'coumarin',
+    'sulphites',
+    'azodicarbonamide',
     'synthetic trans fats',
     'corn syrup',
     'brominated vegetable oil',
     'high fructose corn syrup',
+    'high fructose corn syrup',
+    'sodium carboxymethyl cellulose',
     'phosphoric',
     'formaldehyde',
+    'saccharin',
+    'sucralose',
+    'bleached starch',
+    'tert butylhydroquinone',
+    'caramel coloring',
+    'caramel colouring',
+    'brown ht',
+    'orange b',
+    'bixin',
+    'norbixin',
+    'annatto',
     'nitrites',
+    'acesulfame potassium',
     'methylene',
     'ditrityl',
     'diethylexyl',
     'isobutyl',
     'isopropyl',
     'parabens',
+    'paraben',
     'polyfluoroalkyl',
     'pfas',
     'phenylendiamine',
@@ -64,13 +112,15 @@ class _HomeState extends State<Home> {
     'E951',
     'E262',
     'E330'
+
   ];
   List<String>? constructorArr;
   int flagOfIngredientsFound = 0;
   String harmfulIngredientsFound = "";
   List<String> harmfulIngredientsList = [];
   int numberOfHarm = 0;
-  List <String> nonHarmfulIngredients =[];
+  List <String> nonHarmfulIngredients = [];
+
   Future uploadImage(ImageSource source) async {
     try {
       final image = await ImagePicker().pickImage(source: source);
@@ -110,7 +160,7 @@ class _HomeState extends State<Home> {
       harmfulIngredientsFound = "";
     });
     final inputImage = InputImage.fromFilePath(image.path);
-    final textDetector = GoogleMlKit.vision.textRecognizer();
+    final textDetector = TextRecognizer(script: TextRecognitionScript.latin);
 
     RecognizedText recognizedText = await textDetector.processImage(inputImage);
     await textDetector.close();
@@ -125,7 +175,6 @@ class _HomeState extends State<Home> {
       }
     }
 
-    print(scannedTextArr);
 
     for (int i = 0; i < harmfulIngred.length; i++) {
       if (scannedText.contains(harmfulIngred[i])) {
@@ -148,16 +197,16 @@ class _HomeState extends State<Home> {
       harmfulIngredientsFound = harmfulIngredientsFound.toUpperCase();
     });
 
-    harmfulIngredientsList.sort();
-    print(harmfulIngredientsList);
-    print('-----------------------------------');
-    print(numberOfHarm);
+    harmfulIngred.sort();
+    print(harmfulIngred);
     numberOfHarm = 0;
   }
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    Size size = MediaQuery
+        .of(context)
+        .size;
     return Scaffold(
       backgroundColor: const Color(0xff36353C),
       appBar: AppBar(
@@ -198,97 +247,99 @@ class _HomeState extends State<Home> {
             child: Center(
               child: image != null
                   ? Column(
-                      children: [
-                        // ElevatedButton(
-                        //   onPressed: () => image = null,
-                        //   child: Text('Remove Image'),
-                        // ),
-                        Container(
-                          decoration: const BoxDecoration(
-                              // border: Border.all(
-                              //   color: Colors.white,
-                              // ),
-                              ),
-                          child: Image.file(
-                            image!,
-                            height: 300,
-                            width: size.width * 0.95,
-                          ),
-                        ),
-                        const Spacer(),
+                children: [
+                  // ElevatedButton(
+                  //   onPressed: () => image = null,
+                  //   child: Text('Remove Image'),
+                  // ),
+                  Container(
+                    decoration: const BoxDecoration(
+                      // border: Border.all(
+                      //   color: Colors.white,
+                      // ),
+                    ),
+                    child: Image.file(
+                      image!,
+                      height: 300,
+                      width: size.width * 0.95,
+                    ),
+                  ),
+                  const Spacer(),
 
-                        Container(
-                          height: size.height * 0.16,
-                          width: size.height * 0.16,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            boxShadow: const [
-                              BoxShadow(
-                                color: Color(0xff25252a),
-                                offset: Offset(4.0, 4.0),
-                                blurRadius: 5,
-                                spreadRadius: 0.0,
-                              ),
-                              BoxShadow(
-                                color: Color(0xff25252a),
-                                offset: Offset(-4.0, -4.0),
-                                blurRadius: 5,
-                                spreadRadius: 0.0,
-                              ),
-                            ],
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: ElevatedButton.icon(
-                              icon: const FaIcon(
-                                FontAwesomeIcons.check,
-                                size: 40,
-                              ),
-                              style: ElevatedButton.styleFrom(
-                                primary: const Color(0xff25252a),
-                              ),
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) {
-                                    return flagOfIngredientsFound == 1
-                                        ? ScannedResult(
-                                            scannedText,
-                                            scannedTextArr,
-                                            harmful,
-                                            harmfulIngredientsFound,harmfulIngredientsList)
-                                        : ScannedResult(scannedText,
-                                            scannedTextArr, safe, '',nonHarmfulIngredients);
-                                  }),
-                                );
-                              },
-                              label: Padding(
-                                padding: const EdgeInsets.only(left: 10),
-                                child: Text(
-                                  'Get Result',
-                                  style: GoogleFonts.poppins(
-                                    fontSize: size.width * 0.04,
-                                  ),
-                                ),
-                              ),
+                  Container(
+                    height: size.height * 0.16,
+                    width: size.height * 0.16,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Color(0xff25252a),
+                          offset: Offset(4.0, 4.0),
+                          blurRadius: 5,
+                          spreadRadius: 0.0,
+                        ),
+                        BoxShadow(
+                          color: Color(0xff25252a),
+                          offset: Offset(-4.0, -4.0),
+                          blurRadius: 5,
+                          spreadRadius: 0.0,
+                        ),
+                      ],
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: ElevatedButton.icon(
+                        icon: const FaIcon(
+                          FontAwesomeIcons.check,
+                          size: 40,
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          primary: const Color(0xff25252a),
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) {
+                              return flagOfIngredientsFound == 1
+                                  ? ScannedResult(
+                                  scannedText,
+                                  scannedTextArr,
+                                  harmful,
+                                  harmfulIngredientsFound,
+                                  harmfulIngredientsList)
+                                  : ScannedResult(scannedText,
+                                  scannedTextArr, safe, '',
+                                  nonHarmfulIngredients);
+                            }),
+                          );
+                        },
+                        label: Padding(
+                          padding: const EdgeInsets.only(left: 10),
+                          child: Text(
+                            'Get Result',
+                            style: GoogleFonts.poppins(
+                              fontSize: size.width * 0.04,
                             ),
                           ),
                         ),
-                      ],
-                    )
-                  : Container(
-                      height: 500,
-                      width: 500,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Colors.white,
-                          width: 2,
-                        ),
-                      ),
-                      child: const Image(
-                        image: AssetImage('assets/noimgselected.png'),
                       ),
                     ),
+                  ),
+                ],
+              )
+                  : Container(
+                height: 500,
+                width: 500,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Colors.white,
+                    width: 2,
+                  ),
+                ),
+                child: const Image(
+                  image: AssetImage('assets/noimgselected.png'),
+                ),
+              ),
             ),
           ),
           Positioned(
