@@ -198,7 +198,6 @@ class _HomeState extends State<Home> {
     });
 
     harmfulIngred.sort();
-    print(harmfulIngred);
     numberOfHarm = 0;
   }
 
@@ -345,8 +344,8 @@ class _HomeState extends State<Home> {
           Positioned(
             left: size.width * 0.1,
             top: size.height * 0.70,
-            height: size.height * 0.16,
-            width: size.height * 0.16,
+            height: 145,
+            width: 145,
             child: Center(
               child: Container(
                 height: 210,
@@ -373,7 +372,7 @@ class _HomeState extends State<Home> {
                   child: ElevatedButton.icon(
                     icon: const FaIcon(
                       FontAwesomeIcons.camera,
-                      size: 40,
+                      size: 35,
                     ),
                     style: ElevatedButton.styleFrom(
                       primary: const Color(0xff25252a),
@@ -385,7 +384,7 @@ class _HomeState extends State<Home> {
                         'Capture Image',
                         style: GoogleFonts.poppins(
                           color: Colors.white,
-                          fontSize: size.width * 0.033,
+                          fontSize: 15.5,
                         ),
                       ),
                     ),
@@ -397,8 +396,8 @@ class _HomeState extends State<Home> {
           Positioned(
             right: size.width * 0.1,
             top: size.height * 0.7,
-            height: size.height * 0.16,
-            width: size.height * 0.16,
+            height: 145,
+            width: 145,
             child: Center(
               child: Container(
                 height: 210,
@@ -426,7 +425,7 @@ class _HomeState extends State<Home> {
                   child: ElevatedButton.icon(
                     icon: const FaIcon(
                       FontAwesomeIcons.upload,
-                      size: 40,
+                      size: 35,
                     ),
                     style: ElevatedButton.styleFrom(
                       primary: const Color(0xff25252a),
@@ -438,7 +437,7 @@ class _HomeState extends State<Home> {
                         'Upload Image',
                         style: GoogleFonts.poppins(
                           color: Colors.white,
-                          fontSize: size.width * 0.033,
+                          fontSize: 15.5,
                         ),
                       ),
                     ),
